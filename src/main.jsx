@@ -9,7 +9,7 @@ try {
   if (item) {
     const parsed = JSON.parse(item);
     if (parsed.groupName && (parsed.groupName.includes('\n') || parsed.groupName.startsWith('[') || parsed.groupName.length > 50)) {
-      parsed.groupName = 'CS Dept Official // 2026 Batch';
+      parsed.groupName = 'Imported WhatsApp Group';
       localStorage.setItem('signaldrop_current_data', JSON.stringify(parsed));
     }
   }

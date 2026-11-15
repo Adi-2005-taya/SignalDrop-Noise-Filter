@@ -22,7 +22,7 @@ import {
 const STORAGE_KEY = 'signaldrop_current_data';
 
 export default function App() {
-  const [currentGroupName, setCurrentGroupName] = useState(SAMPLE_CHATS[0].name);
+  const [currentGroupName, setCurrentGroupName] = useState('No Chat Loaded');
   const [pipelineData, setPipelineData] = useState({
     rawMessages: [],
     deadlines: [],
@@ -59,10 +59,10 @@ export default function App() {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed && parsed.rawText) {
+        if (parsed && parsed.rawText && parsed.isUserImported && parsed.groupName !== 'CS Dept Official // 2026 Batch') {
           let safeName = parsed.groupName;
           if (!safeName || safeName.includes('\n') || safeName.startsWith('[') || safeName.length > 50) {
-            safeName = 'CS Dept Official // 2026 Batch';
+            safeName = 'Imported WhatsApp Group';
           }
           handleProcessChat(parsed.rawText, safeName);
           return;
@@ -71,7 +71,7 @@ export default function App() {
     } catch (e) {
       console.warn('LocalStorage error:', e);
     }
-    handleProcessChat(SAMPLE_CHATS[0].rawText, SAMPLE_CHATS[0].name);
+    // Clean initial load: do NOT pre-populate fake chats!
   }, []);
 
   const handleProcessChat = (rawText, groupName) => {
@@ -79,7 +79,7 @@ export default function App() {
     let finalName = (groupName || '').trim();
     // Guard against entire chat dump being passed as group name
     if (!finalName || finalName.includes('\n') || finalName.startsWith('[') || finalName.length > 50) {
-      finalName = 'CS Dept Official // 2026 Batch';
+      finalName = 'Imported WhatsApp Group';
     }
     setCurrentGroupName(finalName);
 
@@ -93,12 +93,17 @@ export default function App() {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
           groupName: finalName,
-          rawText
+          rawText,
+          isUserImported: true
         }));
       } catch (e) {
         // quota or private mode fallback
       }
-    }, 550);
+    }, 450);
+  };
+
+  const handleLoadSample = () => {
+    handleProcessChat(SAMPLE_CHATS[0].rawText, SAMPLE_CHATS[0].name);
   };
 
   // Whole-page Drag & Drop listeners for .txt files
@@ -345,6 +350,7 @@ export default function App() {
           onOpenDigest={() => setIsDigestOpen(true)}
           onToggleSpam={() => setShowSpamColumn(!showSpamColumn)}
           showSpamColumn={showSpamColumn}
+          onLoadSample={handleLoadSample}
         />
 
         {/* Magic Bento Section */}
@@ -402,6 +408,7 @@ export default function App() {
             onViewOriginal={(item) => setDetailItem(item)}
             onRestoreSpam={handleRestoreSpam}
             onOpenIngest={() => setIsIngestOpen(true)}
+            onLoadSample={handleLoadSample}
           />
         </main>
 

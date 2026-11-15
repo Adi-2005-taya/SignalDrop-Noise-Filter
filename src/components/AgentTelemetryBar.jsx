@@ -39,14 +39,14 @@ export default function AgentTelemetryBar({
         {/* Left: Group Name + Noise / Signal Counts */}
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"></span>
+            <span className={`w-2 h-2 rounded-full shrink-0 ${stats?.totalMessages > 0 ? 'bg-emerald-400' : 'bg-zinc-600'}`}></span>
             <span 
               className="text-sm font-bold text-white font-mono tracking-tight truncate max-w-[180px] sm:max-w-[240px] md:max-w-[320px]"
-              title={typeof groupName === 'string' && groupName.length < 60 ? groupName : 'CS Dept Official'}
+              title={typeof groupName === 'string' && groupName.length < 60 ? groupName : 'No Chat Loaded'}
             >
               {typeof groupName === 'string' && !groupName.includes('\n') && !groupName.startsWith('[') && groupName.length < 50
                 ? groupName
-                : 'CS Dept Official'}
+                : (stats?.totalMessages > 0 ? 'Imported WhatsApp Group' : 'No Chat Loaded')}
             </span>
           </div>
 

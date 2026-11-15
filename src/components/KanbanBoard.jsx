@@ -21,47 +21,58 @@ export default function KanbanBoard({
   onToggleComplete,
   onViewOriginal,
   onRestoreSpam,
-  onOpenIngest
+  onOpenIngest,
+  onLoadSample
 }) {
   const allSignalsEmpty = deadlines.length === 0 && resources.length === 0 && announcements.length === 0;
+  const noMessagesLoaded = allSignalsEmpty && (!spam || spam.length === 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
       
-      {/* If entirely empty */}
-      {allSignalsEmpty && (
-        <div className="max-w-md mx-auto my-8">
+      {/* If entirely empty (no chat loaded yet) */}
+      {noMessagesLoaded ? (
+        <div className="max-w-lg mx-auto my-10">
           <BorderGlow
             edgeSensitivity={30}
             glowColor="40 80 80"
             backgroundColor="#0c0f18"
-            borderRadius={20}
-            glowRadius={36}
+            borderRadius={24}
+            glowRadius={40}
             glowIntensity={0.9}
-            colors={['#10b981', '#34d399', '#c084fc']}
+            colors={['#a855f7', '#38bdf8', '#10b981']}
           >
-            <div className="text-center py-12 px-6">
-              <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-white/[0.1] text-emerald-400 flex items-center justify-center mx-auto mb-3">
-                <Inbox className="w-5 h-5" />
+            <div className="text-center py-14 px-8">
+              <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-white/[0.1] text-purple-400 flex items-center justify-center mx-auto mb-4 shadow-[0_0_25px_rgba(168,85,247,0.25)]">
+                <Inbox className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-bold text-white mb-1 font-mono">No Active Signals</h3>
-              <p className="text-xs text-zinc-400 mb-5 font-mono">
-                Import a group chat to extract actionable deadlines & resources.
+              <h3 className="text-base font-bold text-white mb-2 font-mono">No Chat Export Loaded</h3>
+              <p className="text-xs text-zinc-400 mb-6 font-mono leading-relaxed">
+                Import or paste a WhatsApp group export (.txt or .zip) to automatically strip noise and isolate deadlines, resources, and announcements.
               </p>
-              <button
-                onClick={onOpenIngest}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-mono font-semibold text-xs transition"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Load Sample Chat</span>
-              </button>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={onOpenIngest}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-purple-500 hover:bg-purple-400 text-white font-mono font-semibold text-xs transition shadow-[0_0_20px_rgba(168,85,247,0.3)] active:scale-95"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Import Chat</span>
+                </button>
+                {onLoadSample && (
+                  <button
+                    onClick={onLoadSample}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-white/[0.1] text-zinc-300 font-mono text-xs transition"
+                  >
+                    <span>Try Sample Demo</span>
+                  </button>
+                )}
+              </div>
             </div>
           </BorderGlow>
         </div>
-      )}
-
-      {/* Kanban Columns Grid */}
-      <div className={`grid grid-cols-1 md:grid-cols-2 ${showSpamColumn ? 'xl:grid-cols-4' : 'lg:grid-cols-3'} gap-4 items-start`}>
+      ) : (
+        /* Kanban Columns Grid */
+        <div className={`grid grid-cols-1 md:grid-cols-2 ${showSpamColumn ? 'xl:grid-cols-4' : 'lg:grid-cols-3'} gap-4 items-start`}>
         
         {/* ================= COLUMN 1: DEADLINES ================= */}
         <BorderGlow
@@ -259,6 +270,7 @@ export default function KanbanBoard({
         )}
 
       </div>
+      )}
     </div>
   );
 }

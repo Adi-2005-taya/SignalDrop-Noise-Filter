@@ -13,8 +13,11 @@ export default function Hero({
   onOpenIngest, 
   onOpenDigest, 
   onToggleSpam, 
-  showSpamColumn 
+  showSpamColumn,
+  onLoadSample
 }) {
+  const hasMessages = stats && stats.totalMessages > 0;
+
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 pb-2 relative z-10 w-full">
       <BorderGlow
@@ -34,26 +37,36 @@ export default function Hero({
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs font-mono">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
-                <span className="text-purple-300 font-bold uppercase tracking-wider">Active Group</span>
+                <span className={`w-2 h-2 rounded-full ${hasMessages ? 'bg-purple-400 animate-ping' : 'bg-zinc-600'}`}></span>
+                <span className={`${hasMessages ? 'text-purple-300' : 'text-zinc-400'} font-bold uppercase tracking-wider`}>
+                  {hasMessages ? 'Active Group' : 'Awaiting Chat'}
+                </span>
               </div>
               
-              {stats && stats.totalMessages > 0 && (
+              {hasMessages ? (
                 <div className="flex items-center gap-2 text-xs font-mono">
                   <span className="text-emerald-400 font-semibold">{stats.noisePercentage}% noise stripped</span>
                   <span className="text-zinc-600">•</span>
                   <span className="text-zinc-400">~{stats.timeSavedMinutes}m saved</span>
                 </div>
+              ) : (
+                <div className="text-xs font-mono text-zinc-500">
+                  Ready for .txt &amp; .zip
+                </div>
               )}
             </div>
 
             <h2 className="text-xl sm:text-2xl font-bold font-mono tracking-tight text-white truncate max-w-full">
-              {typeof groupName === 'string' && !groupName.includes('\n') && !groupName.startsWith('[') && groupName.length < 50
-                ? groupName
-                : 'CS Dept Official // 2026 Batch'}
+              {hasMessages
+                ? (typeof groupName === 'string' && !groupName.includes('\n') && !groupName.startsWith('[') && groupName.length < 50
+                    ? groupName
+                    : 'Imported WhatsApp Group')
+                : 'No Chat Loaded'}
             </h2>
             <p className="text-xs text-zinc-400 font-mono leading-relaxed">
-              College chat filter separating deadlines, documents, and official notices from group chatter.
+              {hasMessages
+                ? 'College chat filter separating deadlines, documents, and official notices from group chatter.'
+                : 'Paste or drop your raw WhatsApp group export (.txt or .zip) to automatically strip chatter and isolate deadlines, links, and notices.'}
             </p>
           </div>
 
@@ -68,13 +81,23 @@ export default function Hero({
                 <span>Import Chat</span>
               </button>
 
-              <button
-                onClick={onOpenDigest}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-zinc-300 bg-zinc-900/90 hover:bg-zinc-800 border border-white/[0.08] transition"
-              >
-                <Share2 className="w-3.5 h-3.5 text-purple-400" />
-                <span>Export Digest</span>
-              </button>
+              {hasMessages ? (
+                <button
+                  onClick={onOpenDigest}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-zinc-300 bg-zinc-900/90 hover:bg-zinc-800 border border-white/[0.08] transition"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Export Digest</span>
+                </button>
+              ) : onLoadSample ? (
+                <button
+                  onClick={onLoadSample}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-zinc-300 bg-zinc-900/90 hover:bg-zinc-800 border border-white/[0.08] transition"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                  <span>Load Sample Demo</span>
+                </button>
+              ) : null}
             </div>
 
             <div className="flex items-center gap-2">
