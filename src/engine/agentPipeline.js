@@ -141,7 +141,18 @@ export function parseRawChat(text) {
     .replace(/[\u200E\u200F\u202A-\u202E\uFEFF]/g, '')
     .replace(/[\u202F\u00A0]/g, ' ');
 
-  const lines = cleanedText.split(/\r?\n/);
+  // 1. Separate timeline headers like "--- 4 Hours Later (02:30 PM) ---"
+  let preprocessed = cleanedText.replace(/\s*(---[^-]+---)\s*/g, '\n$1\n');
+
+  // 2. Separate inline "Sender: Message" that occurs without a newline
+  // e.g. "hoyeche.Ritam: Ki holo abar?Ayan: Ami ghumochhi"
+  preprocessed = preprocessed.replace(/([^\n])\s*(?<!https?:\/\/)(?<!drive\.google\.com\/[a-zA-Z0-9_\/-]*)(?<!github\.com\/[a-zA-Z0-9_\/-]*)\b(?!(?:ANNOUNCEMENT|NOTICE|DEADLINE|NOTE|WARNING|IMPORTANT|HTTP|HTTPS)\b)([A-Z][a-zA-Z0-9_]{1,25}):\s+/g, '$1\n$2: ');
+
+  // 3. Separate inline standard timestamps if copied inline
+  preprocessed = preprocessed.replace(/([^\n])\s*(\[\d{1,2}[./-]\d{1,2}[./-]\d{2,4})/g, '$1\n$2');
+  preprocessed = preprocessed.replace(/([^\n])\s*(\d{1,2}[./-]\d{1,2}[./-]\d{2,4},?\s+\d{1,2}:\d{2}\s*-\s*)/g, '$1\n$2');
+
+  const lines = preprocessed.split(/\r?\n/);
   const messages = [];
   let currentMsg = null;
 
@@ -158,6 +169,7 @@ export function parseRawChat(text) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
+    if (/^---[^-]+---$/.test(trimmed)) continue;
 
     // Check for WhatsApp system noise line (e.g. "Messages and calls are end-to-end encrypted")
     if (SYSTEM_CHAT_REGEXES.some(rx => rx.test(trimmed))) {
@@ -182,7 +194,7 @@ export function parseRawChat(text) {
       };
     } else {
       // Check if this line is "Sender: Message" without timestamp
-      const match3 = !currentMsg ? trimmed.match(headerRegex3) : null;
+      const match3 = trimmed.match(headerRegex3);
       if (match3 && !trimmed.startsWith('http')) {
         if (currentMsg) {
           messages.push(currentMsg);
@@ -245,7 +257,7 @@ export function runAgent1Sorter(message) {
   }
 
   // 2. Very short messages without actionable content
-  if (trimmed.length < 15 && !/(http|www|exam|due|form|pdf)/i.test(trimmed)) {
+  if (trimmed.length < 15 && !/(http|www|exam|due|form|pdf|📄|📢|📌)/i.test(trimmed)) {
     return {
       category: 'SPAM',
       categories: ['SPAM'],
@@ -254,35 +266,42 @@ export function runAgent1Sorter(message) {
     };
   }
 
+  // 3. Conversational dialogue & shock markers (e.g. "Are you joking?", "Ki holo abar?", "chalano matroi crash kore gelo")
+  const isQuestionOrBanter = /\?{1,}|ki bolchish|are you joking|ghumalam|uthbo|faltu kotha|pagol|chalano matroi crash|darun lagche|subidha nei|chokh e ar|koto cup|rip us|tui ekta|tui re-write/i.test(trimmed);
+
   // Multi-signal detection
   const deadlineHits = DEADLINE_KEYWORDS.filter(kw => content.includes(kw));
   const hasTimeIndicator = TIME_INDICATOR_REGEX.test(content);
-  const isDeadline = deadlineHits.length > 0 && (hasTimeIndicator || /deadline|strictly close|last date|due date|submit before|jama|shesh|antim|শেষ|अंतिम/i.test(content));
+  const hasExplicitDeadline = !isQuestionOrBanter && (
+    /deadline:|due date|last date|shesh tarikh|jama|শেষ তারিখ|अंतिम तिथि|समय सीमा|aj raat \d|kal sokal \d|sokal \d|raat \d|by tonight|\d{1,2}\s*(?:am|pm|ta|tay|tar)\s*(?:[et]ar\s*)?moddhe|(?:[et]ar\s*)?moddhe.*(?:push|report|chai|final|thakbi|submit|debo|hobe)|strictly close|close(?:s)? on|due on|submitted before/i.test(content) ||
+    (deadlineHits.length > 0 && hasTimeIndicator)
+  );
 
-  const resourceHits = RESOURCE_KEYWORDS.filter(kw => content.includes(kw));
   const urlMatches = content.match(/https?:\/\/[^\s]+/gi) || [];
-  const isResource = resourceHits.length > 0 || urlMatches.length > 0;
+  const hasAttachment = /📄|\b\.(pdf|docx?|pptx?|xlsx?|txt|zip|rar|csv|json)\b/i.test(trimmed);
+  const hasLink = urlMatches.length > 0 || /drive\.google\.com|github\.com/i.test(trimmed);
+  const explicitResourcePhrases = /drive link|notes pathiyechi|notes ta pathalam|slides ka link|ye lo pdf|file ta download|syllabus check karo/i.test(content);
+  const isResource = hasAttachment || hasLink || explicitResourcePhrases;
 
   const announcementHits = ANNOUNCEMENT_KEYWORDS.filter(kw => content.includes(kw));
-  const hasAnnouncementContent = /welcome to|hackathon|giveaway|grand finale|prize|winner|celebration|notification|circular|seminar|workshop|lecture|relocated|meeting|নোটিশ|বিজ্ঞপ্তি|सूचना|परिपত্র/i.test(content);
+  const hasAnnouncementContent = !isQuestionOrBanter && (
+    /📢|📌|announcement:|notice:|welcome to|hackathon|giveaway|grand finale|prize|winner|celebration|notification|circular|seminar|workshop|lecture|relocated|meeting|hod sir.*mail|guide sir.*call|external asche|phase \d review|seminar hall|everything is finalized|pinned message|নোটিশ|বিজ্ঞপ্তি|सूचना|परिपत्र/i.test(content)
+  );
   const isFacultyOrAdmin = /(prof|dr\.|hod|warden|coordinator|secretary|cr\b|t&p|placement|gfg|chapter|admin)/i.test(message.sender);
-  const isAnnouncement = announcementHits.length > 0 || hasAnnouncementContent || (isFacultyOrAdmin && content.length > 30);
+  const isAnnouncement = hasAnnouncementContent || announcementHits.length > 0 || (isFacultyOrAdmin && content.length > 30);
 
   const categories = [];
-  if (isDeadline) categories.push('DEADLINE');
+  if (hasExplicitDeadline) categories.push('DEADLINE');
   if (isAnnouncement) categories.push('ANNOUNCEMENT');
   if (isResource) categories.push('RESOURCE');
 
   if (categories.length === 0) {
-    if (content.length < 35) {
-      return {
-        category: 'SPAM',
-        categories: ['SPAM'],
-        confidence: 0.75,
-        reason: 'Informal chatter filtered out'
-      };
-    }
-    categories.push('ANNOUNCEMENT');
+    return {
+      category: 'SPAM',
+      categories: ['SPAM'],
+      confidence: 0.90,
+      reason: 'Informal chatter filtered to Noise Vault'
+    };
   }
 
   return {
@@ -337,11 +356,29 @@ export function runAgent2Extractor(message, category) {
   });
 
   // 2. Extract Document Names / Attachments
-  const docRegex = /([a-zA-Z0-9_\-.]+\.(?:pdf|docx?|pptx?|xlsx?|zip|rar|tar\.gz))/gi;
-  const docMatches = text.match(docRegex) || [];
+  const docMatches = [];
+  const standardDocRegex = /([a-zA-Z0-9_\-.]+\.(?:pdf|docx?|pptx?|xlsx?|txt|zip|rar|tar\.gz|csv|json))/gi;
+  let matchDoc;
+  while ((matchDoc = standardDocRegex.exec(text)) !== null) {
+    const fname = matchDoc[1].trim();
+    if (!docMatches.includes(fname) && !fname.startsWith('http')) {
+      docMatches.push(fname);
+    }
+  }
+
+  // Also check for "📄 filename" explicitly
+  const fileEmojiRegex = /📄\s*([a-zA-Z0-9_.\-]+)/gi;
+  let emojiMatch;
+  while ((emojiMatch = fileEmojiRegex.exec(text)) !== null) {
+    const fname = emojiMatch[1].trim();
+    if (!docMatches.includes(fname)) {
+      docMatches.push(fname);
+    }
+  }
+
   const documents = docMatches.map(filename => ({
     name: filename,
-    extension: filename.split('.').pop().toUpperCase()
+    extension: filename.includes('.') ? filename.split('.').pop().toUpperCase() : 'DOC'
   }));
 
   // 3. Extract Dates & Times (Supports both Month-First and Day-First formats)
@@ -352,16 +389,19 @@ export function runAgent2Extractor(message, category) {
     // 1. Explicit deadline clause in English, Benglish, Hindi, Bengali
     /(?:deadline|strictly close(?:s)? on|close(?:s)? on|submitted before|due on|due date|last date|shesh tarikh|jama|শেষ তারিখ|অপেক্ষমান|अंतिम तिथि|समय सीमा)\s*:?\s*(?:the\s+[a-z\s]+?\s+)?(?:on\s+)?((?:(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday|রবিবার|সোমবার|মঙ্গলবার|বুধবার|বৃহস্পতিবার|শুক্রবার|শনিবার|रविवार|सोमवार|मंगलवार|बुधवार|गुरुवार|शुक्रवार|शनिवार),?\s+)?(?:(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর|जनवरी|फरवरी|मार्च|अप्रैल|मई|जून|जुलाई|अगस्त|सितंबर|अक्टूबर|नवंबर|दिसंबर)\s+[\d০-৯०-९]{1,2}(?:st|nd|rd|th)?|[\d০-৯०-९]{1,2}(?:st|nd|rd|th)?\s+(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর|जनवरी|फरवरी|मार्च|अप्रैल|मई|जून|जुलाई|अगस्त|सितंबर|अक्टूबर|नवंबर|दिसंबर))(?:,?\s+[\d০-৯०-९]{2,4})?(?:,?\s*(?:at|by|সময়)?\s*[\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm]|দুপুুর|সকাল|রাত|बजे|सुबह|शाम)?)?)/iu,
 
-    // 2. Standard Day-First multilingual: "20 নভেম্বর", "25 नवंबर", "20 November 2026"
+    // 2. Relative time with period: "Kal sokal 10 tay", "Aj raat 2:00 AM", "tonight 10 PM", "Today, by 6:00 PM"
+    /((?:today|tomorrow|tonight|aaj|aajke|aj|kal|kaal|আজ|কাল|আজকে|आज|कल)[,\s]*(?:sokal|shokal|bikel|raat|rat|dupur|morning|night|evening|er)?\s*(?:by|at|tak|er|moddhe|পর্যন্ত|तक)?\s*[\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm]|দুপুুর|সকাল|রাত|बजे|सुबह|शाम|tay|ta|tar|ঘণ্টা)?|(?:raat|sokal|shokal|dupur|bikel)\s*[\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm]|tay|ta|tar|moddhe)?)/iu,
+
+    // 3. Standard Day-First multilingual: "20 নভেম্বর", "25 नवंबर", "20 November 2026"
     /(?:(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday),?\s+)?([\d০-৯०-९]{1,2}(?:st|nd|rd|th)?\s+(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর|जनवरी|फरवरी|मार्च|अप्रैल|मई|जून|जुलाई|अगस्त|सितंबर|अक्टूबर|नवंबर|दिसंबर)(?:,?\s+[\d০-৯०-९]{2,4})?(?:,?\s*(?:at|by)?\s*[\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm])?)?)/iu,
 
-    // 3. Month-First multilingual: "November 13, 2026"
+    // 4. Month-First multilingual: "November 13, 2026"
     /(?:(?:sunday|monday|tuesday|wednesday|thursday|friday|saturday),?\s+)?((?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec|জানুয়ারি|ফেব্রুয়ারি|মার্চ|এপ্রিল|মে|জুন|জুলাই|আগস্ট|সেপ্টেম্বর|অক্টোবর|নভেম্বর|ডিসেম্বর|जनवरी|फरवरी|मार्च|अप्रैल|मई|जून|जुलाई|अगस्त|सितंबर|अक्टूबर|नवंबर|दिसंबर)\s+[\d০-৯०-९]{1,2}(?:st|nd|rd|th)?(?:,?\s+[\d০-৯०-९]{2,4})?(?:,?\s*(?:at|by)?\s*[\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm])?)?)/iu,
 
-    // 4. Relative time: "Today, by 6:00 PM" / "কাল রাত" / "আজকে"
-    /(?:today|tomorrow|tonight|aaj|aajke|kal|kaal|আজ|কাল|আজকে|आज|कल),?\s*(?:by|at|tak|পর্যন্ত|तक)?\s*([\d০-৯०-९]{1,2}(?::[\d০-৯०-९]{2})?\s*(?:[AaPp][Mm]|দুপুুর|সকাল|রাত|बजे|सुबह|शाम)?)/iu,
+    // 5. Explicit deadline prefix fallback
+    /(?:deadline|due|last date)\s*:?\s*([^.\n,]+)/iu,
 
-    // 5. Slash/dash numeric: "11/13/2026" or "13/11/2026"
+    // 6. Slash/dash numeric: "11/13/2026" or "13/11/2026"
     /([\d০-৯०-९]{1,2}[\/.-][\d০-৯०-९]{1,2}[\/.-][\d০-৯०-९]{2,4})/u
   ];
 
@@ -399,6 +439,9 @@ export function runAgent2Extractor(message, category) {
   if (category === 'DEADLINE') {
     if (/giveaway|pitch|golden ticket/i.test(text)) actionSummary = 'Submit giveaway entry & star repo before form closes';
     else if (/hackathon/i.test(text)) actionSummary = 'Register team before deadline';
+    else if (/code push|push.*code/i.test(text)) actionSummary = 'Push final code to repository';
+    else if (/report.*final|updated doc|literature survey/i.test(text)) actionSummary = 'Finalize project report & documentation';
+    else if (/phase \d review|presentation|external/i.test(text)) actionSummary = 'Prepare for project phase review';
     else if (/assignment|অ্যাসাইনমেন্ট|असाइनमेंट/i.test(text)) actionSummary = 'Submit assignment via LMS portal';
     else if (/register|registration|নিবন্ধন|पंजीकरण/i.test(text)) actionSummary = 'Complete online registration';
     else if (/exam|midterm|পরীক্ষা|परीक्षा/i.test(text)) actionSummary = 'Prepare for upcoming examination';
@@ -411,10 +454,14 @@ export function runAgent2Extractor(message, category) {
     else if (/notes|নোট|नोट्स/i.test(text)) actionSummary = 'Download shared lecture notes';
     else actionSummary = 'Review shared study materials & references';
   } else if (category === 'ANNOUNCEMENT') {
-    if (/hackathon|genarrative|gfg|giveaway/i.test(text)) actionSummary = 'Campus Tech Innovation & Challenge Announcement';
+    if (/phase \d review|external asche|hod sir/i.test(text)) actionSummary = 'Urgent Faculty Notice: Phase Review Scheduled';
+    else if (/turnitin|plagiarism/i.test(text)) actionSummary = 'Mandatory Turnitin Plagiarism Report Required';
+    else if (/seminar hall|hall er baire/i.test(text)) actionSummary = 'Reporting Venue & Assembly Notice';
+    else if (/finalized|shob folder e upload/i.test(text)) actionSummary = 'Project Submission & Finalization Completed';
+    else if (/hackathon|genarrative|gfg|giveaway/i.test(text)) actionSummary = 'Campus Tech Innovation & Challenge Announcement';
     else if (/workshop|কর্মশালা|कार्यशाला/i.test(text)) actionSummary = 'Campus Technology Workshop Announcement';
     else if (/circular|exam fee|ফি|फीस/i.test(text)) actionSummary = 'Official Academic Circular & Fee Payment Notice';
-    else if (/room|ক্লাস|कक्षा/i.test(text)) actionSummary = 'Class venue / schedule notice';
+    else if (/room|ক্লাস|কক্ষ/i.test(text)) actionSummary = 'Class venue / schedule notice';
     else if (/inspection/i.test(text)) actionSummary = 'Hostel proctorial inspection scheduled';
     else if (/water/i.test(text)) actionSummary = 'Temporary utility disruption notice';
     else if (/chuti|ছুটি|छुट्टी/i.test(text)) actionSummary = 'Campus holiday & leave notification';
