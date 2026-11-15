@@ -84,7 +84,11 @@ College and university WhatsApp & Telegram class groups get overwhelmed quickly:
 - Direct support for raw `.txt` chat files.
 - In-browser unzipping of `.zip` exports (with or without media) via `JSZip`, automatically locating and extracting `_chat.txt` with zero server uploads and complete privacy.
 
-### 7. Built-in Testing Scenarios
+### 7. Multilingual & Regional Dialect Support
+- First-class parsing for **Benglish** (`Kal sokal 10 tay`, `Aj raat 2:00 AM er moddhe`, `jama dite hobe`), **Hinglish** (`aaj raat tak`, `jama karna hai`), **Bengali script (বাংলা)**, and **Hindi script (हिंदी)**.
+- Contextual time and date recognition that extracts full conversational deadlines without truncation.
+
+### 8. Built-in Testing Scenarios
 - Includes sample college chat scenarios:
   - `CS-301: Database Management Systems` (DBMS Project, 15 Nov deadline)
   - `CS-304: Computer Networks` (Socket programming lab, 18 Nov deadline)
@@ -92,6 +96,13 @@ College and university WhatsApp & Telegram class groups get overwhelmed quickly:
 - Includes a 1-click **Download Fake Chat `.txt`** button to test the parser immediately.
 
 ---
+
+## 🚀 Deployment
+
+### Deploy to Vercel (1-Click)
+Deploy the live production app directly to Vercel with zero configuration:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAdi-2005-taya%2FSignalDrop-Noise-Filter)
 
 ## 🛠️ Tech Stack
 
