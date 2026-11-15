@@ -12,6 +12,7 @@ import ChatInputModal from './components/ChatInputModal';
 import DigestModal from './components/DigestModal';
 import ItemDetailModal from './components/ItemDetailModal';
 import AgentInfoModal from './components/AgentInfoModal';
+import AIVerificationModal from './components/AIVerificationModal';
 import { SAMPLE_CHATS } from './data/sampleChats';
 import { processChatPipeline } from './engine/agentPipeline';
 import { 
@@ -51,6 +52,7 @@ export default function App() {
   const [isIngestOpen, setIsIngestOpen] = useState(false);
   const [isDigestOpen, setIsDigestOpen] = useState(false);
   const [isAgentInfoOpen, setIsAgentInfoOpen] = useState(false);
+  const [isVerificationOpen, setIsVerificationOpen] = useState(false);
   const [detailItem, setDetailItem] = useState(null);
 
   // Initialize
@@ -267,6 +269,11 @@ export default function App() {
             const el = document.getElementById('magic-bento-section');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
           }
+        },
+        { 
+          label: 'AI Verification & Feature Audit', 
+          href: '#ai-verification',
+          onClick: () => setIsVerificationOpen(true)
         }
       ]
     },
@@ -351,6 +358,7 @@ export default function App() {
           onToggleSpam={() => setShowSpamColumn(!showSpamColumn)}
           showSpamColumn={showSpamColumn}
           onLoadSample={handleLoadSample}
+          onOpenVerification={() => setIsVerificationOpen(true)}
         />
 
         {/* Magic Bento Section */}
@@ -415,7 +423,16 @@ export default function App() {
         {/* Minimal Footer */}
         <footer className="border-t border-white/[0.04] bg-[#05070b]/60 backdrop-blur-md py-3 px-4 text-[11px] font-mono text-zinc-600">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <span>SignalDrop</span>
+            <div className="flex items-center gap-3">
+              <span>SignalDrop</span>
+              <span className="text-zinc-700">•</span>
+              <button
+                onClick={() => setIsVerificationOpen(true)}
+                className="hover:text-emerald-400 text-emerald-400/90 transition flex items-center gap-1 font-semibold"
+              >
+                <span>🛡️ AI Verification Suite</span>
+              </button>
+            </div>
             <button
               onClick={() => setIsAgentInfoOpen(true)}
               className="hover:text-zinc-400 transition"
@@ -450,6 +467,13 @@ export default function App() {
       <AgentInfoModal
         isOpen={isAgentInfoOpen}
         onClose={() => setIsAgentInfoOpen(false)}
+      />
+
+      <AIVerificationModal
+        isOpen={isVerificationOpen}
+        onClose={() => setIsVerificationOpen(false)}
+        currentStats={pipelineData.stats}
+        groupName={currentGroupName}
       />
 
     </div>

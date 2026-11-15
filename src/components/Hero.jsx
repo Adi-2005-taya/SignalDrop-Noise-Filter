@@ -4,7 +4,8 @@ import {
   Plus, 
   Share2, 
   Trash2,
-  Sparkles
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 
 export default function Hero({ 
@@ -14,7 +15,8 @@ export default function Hero({
   onOpenDigest, 
   onToggleSpam, 
   showSpamColumn,
-  onLoadSample
+  onLoadSample,
+  onOpenVerification
 }) {
   const hasMessages = stats && stats.totalMessages > 0;
 
@@ -98,6 +100,17 @@ export default function Hero({
                   <span>Load Sample Demo</span>
                 </button>
               ) : null}
+
+              {onOpenVerification && (
+                <button
+                  onClick={onOpenVerification}
+                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 transition shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+                  title="Run automated benchmark & efficiency audit"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>AI Verification</span>
+                </button>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
