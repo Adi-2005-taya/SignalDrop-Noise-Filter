@@ -1,14 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import './MagicBento.css';
 import { 
-  Zap, 
   ShieldCheck, 
   Clock, 
-  FileText, 
   ArrowUpRight, 
-  Sparkles,
-  Download,
-  Terminal,
   Activity
 } from 'lucide-react';
 
@@ -235,107 +230,6 @@ export default function MagicBento({
             </div>
             <div className="text-[11px] font-mono text-emerald-400/90 flex items-center gap-1">
               <span>{stats?.signalCount ?? 0} High-Value Signals</span>
-            </div>
-          </MagicBentoCard>
-
-          {/* Card 4: Quick Action - Fake Chat .txt (1 col) */}
-          <MagicBentoCard
-            colSpan={1}
-            rowSpan={1}
-            radius={radius}
-            enableBorderGlow={enableBorderGlow}
-            enableSpotlight={enableSpotlight}
-            spotlightRadius={spotlightRadius}
-            clickEffect={clickEffect}
-            className="p-5 flex flex-col justify-between cursor-pointer group"
-            onClick={onDownloadSample}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-zinc-400">Sample Test Data</span>
-              <div className="w-7 h-7 rounded-lg bg-sky-500/10 border border-sky-500/25 flex items-center justify-center text-sky-400 group-hover:scale-110 transition">
-                <Download className="w-4 h-4" />
-              </div>
-            </div>
-            <div>
-              <div className="text-sm font-bold text-white font-mono group-hover:text-sky-300 transition">
-                Fake Chat .txt
-              </div>
-              <p className="text-[11px] text-zinc-400 font-mono mt-1">
-                Download ready-to-test WhatsApp sample with deadlines & resources
-              </p>
-            </div>
-            <div className="text-[11px] font-mono text-sky-400 flex items-center gap-1">
-              <span>Click to download</span>
-              <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
-            </div>
-          </MagicBentoCard>
-
-          {/* Card 5: Ingest Chat Button (1 col) */}
-          <MagicBentoCard
-            colSpan={1}
-            rowSpan={1}
-            radius={radius}
-            enableBorderGlow={enableBorderGlow}
-            enableSpotlight={enableSpotlight}
-            spotlightRadius={spotlightRadius}
-            clickEffect={clickEffect}
-            className="p-5 flex flex-col justify-between cursor-pointer group"
-            onClick={onOpenIngest}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-mono text-zinc-400">Forward or Paste</span>
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
-                <Zap className="w-4 h-4" />
-              </div>
-            </div>
-            <div>
-              <div className="text-sm font-bold text-white font-mono group-hover:text-emerald-300 transition">
-                Import WhatsApp Chat
-              </div>
-              <p className="text-[11px] text-zinc-400 font-mono mt-1">
-                Drop your raw .txt export or paste text directly
-              </p>
-            </div>
-            <div className="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
-              <span>Open modal</span>
-              <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
-            </div>
-          </MagicBentoCard>
-
-          {/* Card 6: WhatsApp Clean Digest Generator (2 cols) */}
-          <MagicBentoCard
-            colSpan={2}
-            rowSpan={1}
-            radius={radius}
-            enableBorderGlow={enableBorderGlow}
-            enableSpotlight={enableSpotlight}
-            spotlightRadius={spotlightRadius}
-            clickEffect={clickEffect}
-            className="p-5 flex flex-col justify-between cursor-pointer group"
-            onClick={onOpenDigest}
-          >
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-xs font-mono text-purple-300">
-                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                1-Click Student Broadcast
-              </span>
-              <div className="flex items-center gap-1 text-[11px] font-mono text-purple-300 group-hover:translate-x-0.5 transition">
-                <span>Generate</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div>
-              <h4 className="text-white text-base font-bold font-mono tracking-tight group-hover:text-purple-200 transition">
-                Export Formatted WhatsApp Digest
-              </h4>
-              <p className="text-xs text-zinc-400 font-sans mt-1">
-                Compiles sorted deadlines, links, and official circulars into a neat WhatsApp message with emojis, markdown bolding, and course tags.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-[11px] font-mono text-zinc-500">
-              <span>Ready for CRs & batch groups</span>
-              <span>•</span>
-              <span className="text-purple-400">Copy or Download .ics</span>
             </div>
           </MagicBentoCard>
         </>

@@ -13,7 +13,6 @@ import ItemDetailModal from './components/ItemDetailModal';
 import AgentInfoModal from './components/AgentInfoModal';
 import { SAMPLE_CHATS } from './data/sampleChats';
 import { processChatPipeline } from './engine/agentPipeline';
-import { downloadSampleChatFile } from './engine/downloadSample';
 import { 
   UploadCloud,
   LayoutGrid
@@ -310,8 +309,6 @@ export default function App() {
           stats={pipelineData.stats}
           showSpamColumn={showSpamColumn}
           onToggleSpam={() => setShowSpamColumn(!showSpamColumn)}
-          onOpenDigest={() => setIsDigestOpen(true)}
-          onDownloadSample={downloadSampleChatFile}
           onReplayPreloader={() => setIsLoading(true)}
         />
 
@@ -342,7 +339,7 @@ export default function App() {
 
           <MagicBento
             columns={4}
-            rowHeight={200}
+            rowHeight={190}
             gap={12}
             radius={20}
             enableBorderGlow={true}
@@ -350,9 +347,6 @@ export default function App() {
             spotlightRadius={300}
             clickEffect={true}
             stats={pipelineData.stats}
-            onOpenIngest={() => setIsIngestOpen(true)}
-            onOpenDigest={() => setIsDigestOpen(true)}
-            onDownloadSample={downloadSampleChatFile}
             onToggleSpam={() => setShowSpamColumn(!showSpamColumn)}
           />
         </section>

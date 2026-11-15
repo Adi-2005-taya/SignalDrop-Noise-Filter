@@ -1,12 +1,10 @@
 import React from 'react';
 import BorderGlow from './BorderGlow';
-import { downloadSampleChatFile } from '../engine/downloadSample';
 import { 
   Plus, 
   Share2, 
   Trash2,
-  Sparkles,
-  Download
+  Sparkles
 } from 'lucide-react';
 
 export default function Hero({ 
@@ -76,15 +74,6 @@ export default function Hero({
               >
                 <Share2 className="w-3.5 h-3.5 text-purple-400" />
                 <span>Export Digest</span>
-              </button>
-
-              <button
-                onClick={downloadSampleChatFile}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/30 transition shadow-sm"
-                title="Download realistic fake WhatsApp group chat export (.txt) with deadlines & resources"
-              >
-                <Download className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Sample .txt</span>
               </button>
             </div>
 

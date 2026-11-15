@@ -7,8 +7,6 @@ import {
   Layers, 
   Activity, 
   Trash2, 
-  Share2, 
-  Download,
   Menu,
   X
 } from 'lucide-react';
@@ -153,28 +151,6 @@ export default function CardNav({
             </button>
           )}
 
-          {onOpenDigest && (
-            <button
-              onClick={onOpenDigest}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-zinc-300 bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] transition"
-              title="Export WhatsApp Digest"
-            >
-              <Share2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden lg:inline">Digest</span>
-            </button>
-          )}
-
-          {onDownloadSample && (
-            <button
-              onClick={onDownloadSample}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-mono text-emerald-300 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/30 transition"
-              title="Download Fake WhatsApp Chat Export (.txt)"
-            >
-              <Download className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden lg:inline">Fake Chat .txt</span>
-            </button>
-          )}
-
           {/* CardNav CTA Button */}
           {cta && (
             cta.onClick ? (
@@ -315,21 +291,6 @@ export default function CardNav({
               </div>
             ))}
 
-            {/* Mobile Actions */}
-            <div className="pt-2 flex flex-col gap-2">
-              {onDownloadSample && (
-                <button
-                  onClick={() => {
-                    onDownloadSample();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-mono text-emerald-300 bg-emerald-950/40 border border-emerald-500/30"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download Fake Chat .txt</span>
-                </button>
-              )}
-            </div>
           </div>
         </div>
       )}
