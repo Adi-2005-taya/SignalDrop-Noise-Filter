@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import JSZip from 'jszip';
 import Preloader from './components/Preloader';
 import CardNav from './components/CardNav';
 import MagicBento from './components/MagicBento';
@@ -114,17 +115,41 @@ export default function App() {
       }
     };
 
-    const handleDrop = (e) => {
+    const handleDrop = async (e) => {
       e.preventDefault();
       setIsDraggingFile(false);
       const files = e.dataTransfer.files;
       if (files && files.length > 0) {
         const file = files[0];
-        if (file.name.endsWith('.txt')) {
+        const cleanName = file.name.replace(/WhatsApp Chat - /i, '').replace(/\.[^/.]+$/, '').trim();
+
+        if (file.name.toLowerCase().endsWith('.zip') || file.type.includes('zip')) {
+          try {
+            const zip = await JSZip.loadAsync(file);
+            let chatEntry = null;
+            for (const [filename, entry] of Object.entries(zip.files)) {
+              if (!entry.dir && filename.toLowerCase().endsWith('.txt')) {
+                if (filename.toLowerCase().includes('_chat') || filename.toLowerCase().includes('chat')) {
+                  chatEntry = entry;
+                  break;
+                }
+                if (!chatEntry) chatEntry = entry;
+              }
+            }
+            if (chatEntry) {
+              const text = await chatEntry.async('string');
+              handleProcessChat(text, cleanName || 'Imported Chat');
+            } else {
+              alert('No chat text file (.txt or _chat.txt) found inside the dropped ZIP file.');
+            }
+          } catch (err) {
+            console.error('ZIP drop error:', err);
+            alert('Could not read ZIP file. Please ensure it is a valid WhatsApp export archive.');
+          }
+        } else if (file.name.endsWith('.txt')) {
           const reader = new FileReader();
           reader.onload = (event) => {
             const text = event.target.result;
-            const cleanName = file.name.replace(/WhatsApp Chat - /i, '').replace(/\.[^/.]+$/, '').trim();
             handleProcessChat(text, cleanName || 'Imported Chat');
           };
           reader.readAsText(file);
@@ -287,8 +312,8 @@ export default function App() {
       {isDraggingFile && (
         <div className="fixed inset-0 z-[100] bg-emerald-950/90 backdrop-blur-md border-2 border-dashed border-emerald-400 flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-150">
           <UploadCloud className="w-16 h-16 text-emerald-300 animate-bounce mb-3" />
-          <h2 className="text-xl font-bold text-white mb-1 font-mono">Drop Chat Export (.txt)</h2>
-          <p className="text-xs text-emerald-200 font-mono">Release to parse & filter</p>
+          <h2 className="text-xl font-bold text-white mb-1 font-mono">Drop Chat Export (.txt or .zip)</h2>
+          <p className="text-xs text-emerald-200 font-mono">Release to extract &amp; filter messages</p>
         </div>
       )}
 

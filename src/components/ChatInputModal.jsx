@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import JSZip from 'jszip';
 import LatticeLoader from './LatticeLoader';
 import BorderGlow from './BorderGlow';
 import { downloadSampleChatFile } from '../engine/downloadSample';
@@ -32,6 +33,7 @@ export default function ChatInputModal({
   const [processingState, setProcessingState] = useState(null); // null | 'sorting' | 'extracting' | 'done'
   const [parsedPreviewCount, setParsedPreviewCount] = useState(0);
   const [clipboardStatus, setClipboardStatus] = useState('');
+  const [isZipExtracting, setIsZipExtracting] = useState(false);
 
   // Update preview count dynamically
   useEffect(() => {
@@ -79,22 +81,72 @@ export default function ChatInputModal({
     }
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
+  const processUploadedFile = async (file) => {
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target.result;
-      setPastedText(text);
-      const cleanName = file.name
-        .replace(/WhatsApp Chat - /i, '')
-        .replace(/\.[^/.]+$/, '')
-        .trim();
-      setCustomGroupName(cleanName || 'Imported WhatsApp Group');
-      setTab('paste');
-    };
-    reader.readAsText(file);
+    const cleanName = file.name
+      .replace(/WhatsApp Chat - /i, '')
+      .replace(/\.[^/.]+$/, '')
+      .trim();
+
+    // Handle ZIP files (.zip)
+    if (file.name.toLowerCase().endsWith('.zip') || file.type.includes('zip')) {
+      try {
+        setIsZipExtracting(true);
+        const zip = await JSZip.loadAsync(file);
+
+        // Look for WhatsApp chat text file inside ZIP (usually _chat.txt or any .txt file)
+        let chatFile = null;
+        for (const [filename, entry] of Object.entries(zip.files)) {
+          if (!entry.dir && filename.toLowerCase().endsWith('.txt')) {
+            if (filename.toLowerCase().includes('_chat') || filename.toLowerCase().includes('chat')) {
+              chatFile = entry;
+              break;
+            }
+            if (!chatFile) chatFile = entry;
+          }
+        }
+
+        if (chatFile) {
+          const text = await chatFile.async('string');
+          setPastedText(text);
+          setCustomGroupName(cleanName || 'Imported WhatsApp Group');
+          setTab('paste');
+        } else {
+          alert('No chat text file (.txt or _chat.txt) found inside this ZIP archive.');
+        }
+      } catch (err) {
+        console.error('Error reading ZIP file:', err);
+        alert('Could not read ZIP archive. Please ensure it is a valid WhatsApp chat zip export.');
+      } finally {
+        setIsZipExtracting(false);
+      }
+    } else {
+      // Standard .txt file
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const text = event.target.result;
+        setPastedText(text);
+        setCustomGroupName(cleanName || 'Imported WhatsApp Group');
+        setTab('paste');
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processUploadedFile(file);
+    }
+  };
+
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processUploadedFile(file);
+    }
   };
 
   const simulatePipeline = (text, name) => {
@@ -357,16 +409,29 @@ export default function ChatInputModal({
                 </button>
               </div>
 
-              <label className="border-2 border-dashed border-white/[0.15] hover:border-emerald-500/50 rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer bg-zinc-950/40 hover:bg-zinc-900/40 transition group">
-                <UploadCloud className="w-12 h-12 text-emerald-400 group-hover:scale-110 transition mb-3" />
-                <span className="text-sm font-semibold text-white mb-1">Select or drag & drop WhatsApp .txt export</span>
-                <span className="text-xs text-zinc-400 font-mono mb-3">Compatible with all Android and iOS WhatsApp backups</span>
-                <span className="text-xs font-mono px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 border border-white/[0.08]">
-                  Browse Computer (.txt)
-                </span>
+              <label 
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleFileDrop}
+                className="border-2 border-dashed border-white/[0.15] hover:border-emerald-500/50 rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer bg-zinc-950/40 hover:bg-zinc-900/40 transition group relative"
+              >
+                {isZipExtracting ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="w-8 h-8 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+                    <span className="text-sm font-semibold text-emerald-300 font-mono">Extracting chat from ZIP...</span>
+                  </div>
+                ) : (
+                  <>
+                    <UploadCloud className="w-12 h-12 text-emerald-400 group-hover:scale-110 transition mb-3" />
+                    <span className="text-sm font-semibold text-white mb-1">Select or drag &amp; drop WhatsApp .txt or .zip export</span>
+                    <span className="text-xs text-zinc-400 font-mono mb-3">Compatible with .txt files &amp; .zip archives (with or without media)</span>
+                    <span className="text-xs font-mono px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300 border border-white/[0.08] hover:bg-zinc-700 transition">
+                      Browse Computer (.txt or .zip)
+                    </span>
+                  </>
+                )}
                 <input
                   type="file"
-                  accept=".txt"
+                  accept=".txt,.zip,application/zip,application/x-zip-compressed"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
@@ -375,10 +440,10 @@ export default function ChatInputModal({
               <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06] text-xs font-mono text-zinc-400 space-y-1">
                 <div className="text-zinc-300 font-bold flex items-center gap-1.5">
                   <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Quick Export Shortcut:</span>
+                  <span>WhatsApp Export Guide:</span>
                 </div>
                 <p className="font-sans text-zinc-400">
-                  In WhatsApp, open any group → Tap <strong>⋮ (Three dots)</strong> or group name → <strong>More</strong> → <strong>Export Chat</strong> → <strong>Without Media</strong>. Then upload the generated <code>.txt</code> file here!
+                  In WhatsApp, open any group → Tap <strong>⋮ (Three dots)</strong> or group name → <strong>More</strong> → <strong>Export Chat</strong>. You can upload the generated <code>.txt</code> file or the <code>.zip</code> file (with media) directly here!
                 </p>
               </div>
             </div>

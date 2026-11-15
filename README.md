@@ -80,7 +80,11 @@ College and university WhatsApp & Telegram class groups get overwhelmed quickly:
 - Generates a cleanly formatted text message complete with bold headings, emojis, and bullet points.
 - Class Representatives (CRs) can broadcast updates back to the group so everyone stays informed without scrolling.
 
-### 6. Built-in Testing Scenarios
+### 6. Universal WhatsApp Export Ingestion (.txt &amp; .zip)
+- Direct support for raw `.txt` chat files.
+- In-browser unzipping of `.zip` exports (with or without media) via `JSZip`, automatically locating and extracting `_chat.txt` with zero server uploads and complete privacy.
+
+### 7. Built-in Testing Scenarios
 - Includes sample college chat scenarios:
   - `CS-301: Database Management Systems` (DBMS Project, 15 Nov deadline)
   - `CS-304: Computer Networks` (Socket programming lab, 18 Nov deadline)
