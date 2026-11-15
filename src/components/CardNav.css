@@ -1,0 +1,144 @@
+.cardnav-container {
+  position: relative;
+  width: 100%;
+  z-index: 50;
+}
+
+.cardnav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  background: rgba(10, 11, 16, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardnav-item-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+}
+
+.cardnav-item-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.cardnav-item-btn.is-active {
+  color: #ffffff;
+  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 16px -2px rgba(168, 85, 247, 0.3);
+}
+
+.cardnav-chevron {
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardnav-item-btn.is-active .cardnav-chevron {
+  transform: rotate(180deg);
+}
+
+/* Card Rise Effect */
+.cardnav-card-wrapper {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: 580px;
+  z-index: 60;
+  perspective: 1000px;
+  pointer-events: auto;
+}
+
+.cardnav-card-rise {
+  background: #0d0f18;
+  background: linear-gradient(135deg, rgba(17, 19, 29, 0.96) 0%, rgba(12, 13, 20, 0.98) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  border-radius: 20px;
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.85),
+    0 0 40px -10px rgba(168, 85, 247, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 1.5rem;
+  animation: cardNavRise 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: top center;
+}
+
+@keyframes cardNavRise {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cardnav-card-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e4e4e7;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.cardnav-card-link:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #ffffff;
+  transform: translateX(3px);
+  box-shadow: 0 4px 14px -2px rgba(168, 85, 247, 0.25);
+}
+
+.cardnav-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #04130b;
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px -3px rgba(16, 185, 129, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+.cardnav-cta-btn:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px -2px rgba(16, 185, 129, 0.6);
+}
+

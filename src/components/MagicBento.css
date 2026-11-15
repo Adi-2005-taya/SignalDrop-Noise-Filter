@@ -1,0 +1,100 @@
+.magic-bento-grid {
+  position: relative;
+  display: grid;
+  width: 100%;
+  transition: all 0.3s ease;
+  overflow: visible;
+}
+
+.magic-bento-card {
+  position: relative;
+  background: #0d0f17;
+  background: linear-gradient(135deg, rgba(14, 16, 24, 0.9) 0%, rgba(9, 10, 16, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  user-select: none;
+}
+
+.magic-bento-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px -5px rgba(168, 85, 247, 0.15);
+}
+
+/* Spotlight Overlay */
+.magic-bento-spotlight {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.magic-bento-grid:hover .magic-bento-spotlight {
+  opacity: 1;
+}
+
+/* Border Glow */
+.magic-bento-border-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    var(--spotlight-radius, 300px) circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(168, 85, 247, 0.6) 0%,
+    rgba(16, 185, 129, 0.4) 40%,
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.magic-bento-card:hover .magic-bento-border-glow {
+  opacity: 1;
+}
+
+/* Click Ripple Effect */
+.magic-bento-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: magicBentoRippleAnim 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 5;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(56, 189, 248, 0.25) 50%, transparent 80%);
+}
+
+@keyframes magicBentoRippleAnim {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.9;
+  }
+  100% {
+    width: 600px;
+    height: 600px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Content Container */
+.magic-bento-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+

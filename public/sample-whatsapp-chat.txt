@@ -1,0 +1,97 @@
+[11/10/26, 09:00:15] Prof. Ramanathan (HOD CSE): Good morning 3rd year students. Welcome to the official academic notices group for Semester 5. Only CRs and Faculty are permitted to post here.
+[11/10/26, 09:01:00] Aryan Sharma: Ok sir
+[11/10/26, 09:01:12] Rohan Verma: ok sir
+[11/10/26, 09:01:25] Sneha Patel: Noted sir
+[11/10/26, 09:01:30] Aman: ok sir
+[11/10/26, 09:01:45] Priya: Ok sir thank you
+[11/10/26, 09:02:10] Kunal: +1
+[11/10/26, 09:02:15] Shreya: +1
+
+[11/10/26, 09:15:22] Dr. Sunita K (DBMS Faculty): ATTENTION CS301 (Database Management Systems):
+The Problem Statement for the Relational Database Design & Normalization Project is released.
+GitHub Repository with schema templates and sample datasets: https://github.com/cs-dept-2026/dbms-project-starter
+DEADLINE: Sunday, 15 November 2026, by 11:59 PM sharp on the college LMS portal. Late submissions will face an automatic 15% grade deduction.
+[11/10/26, 09:16:00] Tanmay: Ma'am can we make groups of 4?
+[11/10/26, 09:16:30] Dr. Sunita K: Strictly maximum 3 students per group.
+[11/10/26, 09:16:45] Tanmay: Ok ma'am thank you
+[11/10/26, 09:17:01] Vicky: ok ma'am
+[11/10/26, 09:17:15] Neha: Ok ma'am
+[11/10/26, 09:17:30] Harsh: ok ma'am
+[11/10/26, 09:17:40] Divya: 👍
+[11/10/26, 09:18:00] Karthik: ok ma'am
+[11/10/26, 09:18:15] Rahul: +1
+[11/10/26, 09:18:25] Saurabh: +1
+
+[11/10/26, 11:30:45] Prof. A. Mehta (Computer Networks): CS304 Lab 4 on TCP/UDP Socket Programming is now active.
+Students can download the socket programming guide, client-server templates, and Wireshark capture pcaps here:
+https://drive.google.com/file/d/1X98-CS304-SocketProgramming-LabGuide.pdf
+SUBMISSION DEADLINE: Wednesday, 18 November 2026, at 05:00 PM. Submit your documented .c or .py files along with output screenshots.
+[11/10/26, 11:31:10] Yash: Sir is attendance in lab compulsory?
+[11/10/26, 11:31:40] Prof. A. Mehta: Physical lab evaluation is mandatory for credit.
+[11/10/26, 11:32:00] Yash: Ok sir
+[11/10/26, 11:32:15] Aryan: ok sir
+[11/10/26, 11:32:30] Kunal: ok sir
+[11/10/26, 11:32:45] Rohan: ok sir
+
+[11/10/26, 12:45:10] Academic Office: OFFICIAL CIRCULAR:
+All semester examination fees for the Autumn 2026 term must be paid online via the student ERP portal.
+Last Date for Fee Payment without late fee: Friday, 20 November 2026, 05:00 PM.
+Portal Link: https://erp.college.edu/payments/exam-autumn2026
+[11/10/26, 12:46:00] Deepa: Sir ERP payment gateway is saying transaction failed
+[11/10/26, 12:46:25] Mohit: Same here, money debited but receipt not generated
+[11/10/26, 12:46:40] Ankit: +1
+[11/10/26, 12:46:55] Varun: +1
+[11/10/26, 12:47:10] Shreya: +1
+[11/10/26, 12:48:30] Academic Office: In case of bank debit without receipt, wait 24 hours for bank reconciliation before re-attempting. Do not pay twice.
+[11/10/26, 12:49:00] Deepa: Ok sir thank you
+[11/10/26, 12:49:15] Mohit: ok sir
+
+[11/10/26, 14:10:05] Divya (Class Representative): GUYS ATTENTION:
+Tomorrow's 09:00 AM CS301 Lecture with Dr. Sunita is moved from LH-102 to Seminar Hall 3 (3rd Floor, Main Building) due to maintenance work on the central AC.
+[11/10/26, 14:10:35] Harsh: Noted Divya thanks
+[11/10/26, 14:10:50] Aman: Thanks CR
+[11/10/26, 14:11:05] Sneha: 👍
+[11/10/26, 14:11:20] Vicky: ok
+[11/10/26, 14:11:35] Sahil: ok
+[11/10/26, 14:12:00] Manas: Can someone send today's class recording link please?
+[11/10/26, 14:12:20] Manas: urgent pls
+[11/10/26, 14:13:00] Rohit: Happy Birthday Vivek bro! 🎂🎉🥳
+[11/10/26, 14:13:15] Aryan: Happy Birthday Vivek!! Canteen treat when?
+[11/10/26, 14:13:30] Kunal: HBD bhai! Party hard
+[11/10/26, 14:13:45] Rohan: Happy birthday bhai 🎉
+[11/10/26, 14:14:10] Vivek: Thanks a lot everyone!! Treat tomorrow after 4 PM lab 😄
+
+[11/10/26, 15:30:20] Training & Placement Cell: SPECIAL ANNOUNCEMENT & RESOURCE:
+Google DeepMind engineer is conducting a live campus workshop on "Generative AI & LLMs in Production: From Research to Real-Time Agents".
+DATE & TIME: Thursday, 19 November 2026 at 03:30 PM in the Central Auditorium.
+Pre-reading material & workshop setup repo: https://github.com/google-deepmind/agentic-ai-crash-course
+Registration Form (Limited to 200 seats): https://forms.gle/GenerativeAIWorkshop2026
+[11/10/26, 15:31:00] Siddharth: Sir will e-certificates be provided?
+[11/10/26, 15:31:25] Training & Placement Cell: Yes, verified credentials will be issued to registered attendees.
+[11/10/26, 15:31:40] Siddharth: Registered thank you sir
+[11/10/26, 15:32:00] Ananya: Registered!
+[11/10/26, 15:32:15] Abhay: ok sir
+[11/10/26, 15:32:30] Bhavna: ok sir
+
+[11/10/26, 16:45:00] Innovation Cell // Prof. Deshmukh: SMART CAMPUS HACKATHON 2026:
+Teams are invited to build AI-driven solutions for campus sustainability, noise filtering, and student productivity.
+Cash prize pool of INR 1,50,000 + Incubation support.
+Complete Hackathon Guidelines & Rulebook PDF: https://drive.google.com/file/d/1Z90-SmartCampusHackathon-Guidelines.pdf
+REGISTRATION DEADLINE: Thursday, 12 November 2026, at 06:00 PM. No entries accepted past the deadline.
+Team size: 2 to 4 members. Register here: https://unstop.com/hackathons/smart-campus-hackathon-2026
+[11/10/26, 16:45:45] Rahul: Anyone looking for a frontend developer for hackathon? DM me
+[11/10/26, 16:46:10] Chirag: DM sent
+[11/10/26, 16:46:25] Saurabh: Need one ML engineer for team, ping me
+[11/10/26, 16:47:00] Aryan: ok sir
+[11/10/26, 16:47:15] Tanmay: ok sir
+
+[11/10/26, 17:15:00] Central Library: NOTICE REGARDING BOOK RETURNS:
+All semester-issued text books and reference volumes must be renewed or returned to the central library on or before 22 November 2026.
+Overdue fine of Rs. 10 per book per day will be applicable thereafter.
+Check your borrowed catalog online: https://opac.college.edu/myaccount
+[11/10/26, 17:15:30] Neha: Can we renew online without visiting library?
+[11/10/26, 17:16:00] Central Library: Online renewal is available via the OPAC portal up to 2 times.
+[11/10/26, 17:16:20] Neha: Ok thank you sir
+[11/10/26, 17:16:45] Harsh: ok sir
+[11/10/26, 17:17:00] Divya: Noted
+
