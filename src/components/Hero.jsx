@@ -55,7 +55,7 @@ export default function Hero({
                 : 'CS Dept Official // 2026 Batch'}
             </h2>
             <p className="text-xs text-zinc-400 font-mono leading-relaxed">
-              Multi-agent noise filter isolating deadlines, PDFs, and official notices from group chatter.
+              College chat filter separating deadlines, documents, and official notices from group chatter.
             </p>
           </div>
 

@@ -106,7 +106,7 @@ export default function Preloader({ onComplete }) {
 
                   {/* Subtitle matching Hero */}
                   <p className="text-xs text-zinc-400 font-mono leading-relaxed">
-                    Multi-agent noise filter isolating deadlines, PDFs, and official notices from group chatter.
+                    College chat filter separating deadlines, documents, and official notices from group chatter.
                   </p>
                 </div>
               </BorderGlow>

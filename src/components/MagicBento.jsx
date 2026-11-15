@@ -153,26 +153,26 @@ export default function MagicBento({
               <div className="flex items-center justify-between mb-2">
                 <span className="flex items-center gap-2 text-xs font-mono font-semibold text-purple-400 uppercase tracking-wider">
                   <Activity className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
-                  Agent 1 • Real-time Sorter
+                  Step 1 • Chat Cleaner
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-purple-500/15 border border-purple-500/30 text-purple-300">
-                  Dual-Intent Active
+                  Multi-Signal Active
                 </span>
               </div>
               <h4 className="text-white text-base font-bold font-mono tracking-tight">
-                Deterministic Regex + Month-First Heuristics
+                Pattern Matching &amp; Date Extraction
               </h4>
               <p className="text-xs text-zinc-400 font-sans mt-1 line-clamp-2">
-                Identifies mixed composite announcements like GeNarrative Clash & automatically splits them into both Deadlines and Official Notices.
+                Detects complex announcements with due dates and categorizes them into both Deadlines and Official Notices without dropping details.
               </p>
             </div>
             <div className="flex items-center gap-3 pt-3 border-t border-white/[0.06] text-xs font-mono text-zinc-400">
               <span className="flex items-center gap-1.5 text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                Zero Hallucinations
+                Rule-Based Accuracy
               </span>
               <span>•</span>
-              <span className="text-zinc-300">Lat: ~1.0s</span>
+              <span className="text-zinc-300">Speed: &lt; 1s</span>
             </div>
           </MagicBentoCard>
 

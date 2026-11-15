@@ -38,8 +38,8 @@ export default function ItemDetailModal({
               <MessageSquare className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">Message Origin & Telemetry</h2>
-              <p className="text-xs text-zinc-400 font-mono">Original WhatsApp context and agent parsing metadata</p>
+              <h2 className="text-base font-bold text-white">Message Origin & Details</h2>
+              <p className="text-xs text-zinc-400 font-mono">Original WhatsApp message context and parsed details</p>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ export default function ItemDetailModal({
           {/* Synthesized Action Item */}
           <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
             <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">
-              Extracted Action by Agent 2:
+              Extracted Action Summary:
             </span>
             <p className="text-sm font-semibold text-emerald-200">
               {item.actionSummary || item.content}
@@ -94,13 +94,13 @@ export default function ItemDetailModal({
             </div>
           </div>
 
-          {/* Agent Sorter classification reason */}
+          {/* Sorter classification reason */}
           {item.originalMessage && item.originalMessage.sorterReason && (
             <div className="p-3 rounded-lg bg-zinc-900/60 border border-white/[0.06] text-xs font-mono text-zinc-400 flex items-start gap-2">
               <Bot className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
               <div>
-                <span className="text-zinc-300 font-semibold">Agent 1 Sorter Decision: </span>
-                <span>{item.originalMessage.sorterReason} (Confidence: {Math.round((item.originalMessage.sorterConfidence || 0.95) * 100)}%)</span>
+                <span className="text-zinc-300 font-semibold">Classification Decision: </span>
+                <span>{item.originalMessage.sorterReason} (Certainty: {Math.round((item.originalMessage.sorterConfidence || 0.95) * 100)}%)</span>
               </div>
             </div>
           )}

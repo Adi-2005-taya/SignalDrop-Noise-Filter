@@ -173,8 +173,8 @@ export default function ChatInputModal({
 
             <div className="space-y-4 max-w-md w-full font-mono text-left bg-zinc-950 p-4 rounded-xl border border-white/[0.08]">
               <div className="flex items-center justify-between text-xs pb-2 border-b border-zinc-800">
-                <span className="text-zinc-400">PIPELINE EXECUTION:</span>
-                <span className="text-emerald-400 font-bold animate-pulse">FILTERING NOISE</span>
+                <span className="text-zinc-400">FILTER EXECUTION:</span>
+                <span className="text-emerald-400 font-bold animate-pulse">CLEANING CHAT</span>
               </div>
 
               <div className={`flex items-center gap-2.5 text-xs ${processingState === 'sorting' ? 'text-cyan-400 font-semibold' : 'text-zinc-500'}`}>
@@ -183,7 +183,7 @@ export default function ChatInputModal({
                 ) : (
                   <CheckCircle className="w-3.5 h-3.5 text-emerald-400" />
                 )}
-                <span>[Agent 1: Sorter] Categorizing chatter vs actionable signals...</span>
+                <span>[Step 1] Separating chatter from actionable messages...</span>
               </div>
 
               <div className={`flex items-center gap-2.5 text-xs ${processingState === 'extracting' ? 'text-amber-400 font-semibold' : processingState === 'done' ? 'text-zinc-500' : 'text-zinc-600'}`}>
@@ -194,7 +194,7 @@ export default function ChatInputModal({
                 ) : (
                   <span className="w-2 h-2 rounded-full bg-zinc-700" />
                 )}
-                <span>[Agent 2: Extractor] Extracting deadlines, drive links & actions...</span>
+                <span>[Step 2] Extracting deadlines, drive links &amp; notices...</span>
               </div>
 
               <div className={`flex items-center gap-2.5 text-xs ${processingState === 'done' ? 'text-emerald-400 font-semibold' : 'text-zinc-600'}`}>
@@ -203,7 +203,7 @@ export default function ChatInputModal({
                 ) : (
                   <span className="w-2 h-2 rounded-full bg-zinc-700" />
                 )}
-                <span>[Focus Board] Rendering Zero-Doomscroll Kanban Board...</span>
+                <span>[Focus Board] Organizing clean task board...</span>
               </div>
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function ChatInputModal({
                   className="px-5 py-2 rounded-lg text-xs font-mono font-bold bg-emerald-400 hover:bg-emerald-300 disabled:opacity-40 text-zinc-950 transition flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.3)] active:scale-95"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Filter Noise & Run Agents</span>
+                  <span>Filter Noise &amp; Sort Signals</span>
                 </button>
               </div>
             </div>
@@ -465,7 +465,7 @@ export default function ChatInputModal({
                     <span>Fastest Method: WhatsApp Web (Direct Copy)</span>
                   </div>
                   <p className="text-zinc-300 font-sans leading-relaxed">
-                    You don't even need to export files! In WhatsApp Web on your browser, click and drag with your mouse to highlight the last 20–50 messages from your professor or group, press <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 border border-white/[0.1] text-zinc-200">Ctrl+C</kbd>, switch to SignalDrop, and press <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 border border-white/[0.1] text-zinc-200">Ctrl+V</kbd> in the <strong>Paste Real Chat Text</strong> tab. The multi-agent pipeline immediately handles the rest.
+                    You don't even need to export files! In WhatsApp Web on your browser, click and drag with your mouse to highlight the last 20–50 messages from your professor or group, press <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 border border-white/[0.1] text-zinc-200">Ctrl+C</kbd>, switch to SignalDrop, and press <kbd className="px-1.5 py-0.5 rounded bg-zinc-800 border border-white/[0.1] text-zinc-200">Ctrl+V</kbd> in the <strong>Paste Real Chat Text</strong> tab. The filter system immediately handles the rest.
                   </p>
                 </div>
 

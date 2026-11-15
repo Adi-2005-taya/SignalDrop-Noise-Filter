@@ -224,47 +224,35 @@ export default function App() {
   const navItems = useMemo(() => [
     {
       label: 'About',
-      description: 'The people and the story behind the studio.',
+      description: 'SignalDrop is an academic filter designed to rescue college students from chat clutter by organizing deadlines, documents, and notices into clear priorities.',
       links: [
         { 
-          label: 'Company', 
-          href: '#company',
+          label: 'Project Overview', 
+          href: '#about-project',
           onClick: () => setIsAgentInfoOpen(true)
         },
         { 
-          label: 'Careers', 
-          href: '#careers',
-          onClick: () => {
-            alert('GeNarrative Clash 2026: Star the repository to retain eligibility for the Grand Finale!');
-          }
-        }
-      ]
-    },
-    {
-      label: 'Projects',
-      description: 'Selected work from the last few years.',
-      links: [
-        { 
-          label: 'Featured', 
-          href: '#featured',
+          label: 'Filter Engine & Breakdown', 
+          href: '#filter-engine',
           onClick: () => {
             const el = document.getElementById('magic-bento-section');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
           }
-        },
-        { 
-          label: 'Case studies', 
-          href: '#case-studies',
-          onClick: () => setIsAgentInfoOpen(true)
         }
       ]
     },
     {
       label: 'Contact',
-      description: 'Say hello, we read everything.',
+      description: 'Reach out for inquiries, feedback, or collaborations.',
       links: [
-        { label: 'Email', href: 'mailto:hello@example.com' },
-        { label: 'LinkedIn', href: 'https://linkedin.com' }
+        { 
+          label: 'wbaditya2005@gmail.com', 
+          href: 'mailto:wbaditya2005@gmail.com' 
+        },
+        { 
+          label: 'www.linkedin.com/in/aditaya-das-586154325', 
+          href: 'https://www.linkedin.com/in/aditaya-das-586154325' 
+        }
       ]
     }
   ], []);
@@ -274,7 +262,7 @@ export default function App() {
   const filteredAnnouncements = useMemo(() => filterList(pipelineData.announcements), [pipelineData.announcements, searchQuery, selectedCategory, selectedCourse]);
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-zinc-200 flex flex-col font-sans selection:bg-purple-500/20 selection:text-purple-300 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#07090e] text-zinc-200 flex flex-col font-serif selection:bg-purple-500/20 selection:text-purple-300 relative overflow-x-hidden">
       
       {/* Interactive CrystalizedBall Preloader */}
       {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}

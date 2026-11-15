@@ -256,11 +256,13 @@ export default function CardNav({
                     ) : (
                       <a
                         href={link.href || '#'}
+                        target={link.href?.startsWith('http') ? '_blank' : undefined}
+                        rel={link.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
                         onClick={() => setActiveItemIndex(null)}
                         className="cardnav-card-link font-mono text-xs group"
                       >
-                        <span className="font-semibold">{link.label}</span>
-                        <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
+                        <span className="font-semibold truncate">{link.label}</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-purple-400 group-hover:translate-x-1 transition shrink-0 ml-1" />
                       </a>
                     )}
                   </div>
@@ -300,8 +302,10 @@ export default function CardNav({
                       <a
                         key={link.label || lIdx}
                         href={link.href || '#'}
+                        target={link.href?.startsWith('http') ? '_blank' : undefined}
+                        rel={link.href?.startsWith('http') ? 'noopener noreferrer' : undefined}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="text-xs font-mono text-zinc-300 hover:text-white py-1 px-2 rounded hover:bg-white/[0.05] block"
+                        className="text-xs font-mono text-zinc-300 hover:text-white py-1 px-2 rounded hover:bg-white/[0.05] block truncate"
                       >
                         • {link.label}
                       </a>

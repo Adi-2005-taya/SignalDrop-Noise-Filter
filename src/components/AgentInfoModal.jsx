@@ -38,8 +38,8 @@ export default function AgentInfoModal({ isOpen, onClose }) {
               <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">SignalDrop Multi-Agent AI Pipeline</h2>
-              <p className="text-xs text-zinc-400 font-mono">Architecture & Technical Implementation Breakdown</p>
+              <h2 className="text-base font-bold text-white">SignalDrop Project Overview</h2>
+              <p className="text-xs text-zinc-400 font-mono">How the message cleaner and parser organize your class chats</p>
             </div>
           </div>
 
@@ -58,10 +58,10 @@ export default function AgentInfoModal({ isOpen, onClose }) {
           <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-transparent border border-emerald-500/20">
             <h3 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span>Zero-Doomscroll Architecture for Campus Communications</span>
+              <span>Clean Communication Feed for College Students</span>
             </h3>
             <p className="text-zinc-300 font-sans leading-relaxed">
-              Official and unofficial college groups generate hundreds of messages per day. SignalDrop runs an asynchronous 2-stage agent pipeline that eliminates up to 92% of conversational spam while preserving 100% of actionable academic events.
+              Official and unofficial college groups generate hundreds of messages per day. SignalDrop uses a two-step parsing engine to filter out casual chatter, repetitive acknowledgments, and off-topic messages, preserving important academic deadlines and announcements without saving any personal data.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ export default function AgentInfoModal({ isOpen, onClose }) {
             spotlightRadius={260}
             clickEffect={true}
           >
-            {/* AGENT 1 CARD */}
+            {/* STEP 1 CARD */}
             <MagicBentoCard
               colSpan={1}
               rowSpan={1}
@@ -92,28 +92,28 @@ export default function AgentInfoModal({ isOpen, onClose }) {
                   <Bot className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-cyan-300">Agent 1: The Sorter</h4>
-                  <span className="text-[10px] text-zinc-400">Semantic Noise Classifier</span>
+                  <h4 className="text-sm font-bold text-cyan-300">Step 1: Noise Removal</h4>
+                  <span className="text-[10px] text-zinc-400">Message Filter &amp; Sorter</span>
                 </div>
               </div>
 
               <ul className="space-y-2 text-zinc-300 font-sans text-xs">
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 font-mono">▸</span>
-                  <span><strong>Spam Elimination:</strong> Filters out greetings ("HBD"), acknowledgments ("ok sir", "+1"), emojis, and casual chatter.</span>
+                  <span><strong>Spam Elimination:</strong> Discards greetings ("HBD"), acknowledgments ("ok sir", "+1"), emojis, and random chatter.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 font-mono">▸</span>
-                  <span><strong>Signal Classification:</strong> Routes candidate messages into <em>Deadlines</em>, <em>Resources</em>, or <em>Announcements</em>.</span>
+                  <span><strong>Category Sorting:</strong> Directs candidate messages into <em>Deadlines</em>, <em>Resources</em>, or <em>Announcements</em>.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 font-mono">▸</span>
-                  <span><strong>Confidence Scoring:</strong> Computes statistical certainty for auditable inspection in the Noise Vault.</span>
+                  <span><strong>Safe Recovery:</strong> Keeps discarded text in an auditable Noise Vault where you can review or restore messages anytime.</span>
                 </li>
               </ul>
             </MagicBentoCard>
 
-            {/* AGENT 2 CARD */}
+            {/* STEP 2 CARD */}
             <MagicBentoCard
               colSpan={1}
               rowSpan={1}
@@ -129,23 +129,23 @@ export default function AgentInfoModal({ isOpen, onClose }) {
                   <Zap className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-amber-300">Agent 2: The Extractor</h4>
-                  <span className="text-[10px] text-zinc-400">Entity &amp; Action Parser</span>
+                  <h4 className="text-sm font-bold text-amber-300">Step 2: Signal Extraction</h4>
+                  <span className="text-[10px] text-zinc-400">Details &amp; Calendar Parser</span>
                 </div>
               </div>
 
               <ul className="space-y-2 text-zinc-300 font-sans text-xs">
                 <li className="flex items-start gap-2">
                   <span className="text-amber-400 font-mono">▸</span>
-                  <span><strong>Date &amp; Time Normalization:</strong> Identifies deadlines ("Sunday 11:59 PM") and exports 1-click <code>.ics</code> calendar files.</span>
+                  <span><strong>Date Normalization:</strong> Recognizes submission deadlines and generates downloadable <code>.ics</code> calendar files.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-400 font-mono">▸</span>
-                  <span><strong>Link &amp; Document Categorization:</strong> Identifies Google Classroom, Drive, Superset, and PDF files.</span>
+                  <span><strong>Link &amp; File Sorting:</strong> Detects Google Classroom, Drive, Superset links, and attached PDF notes.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-amber-400 font-mono">▸</span>
-                  <span><strong>Action Synthesis:</strong> Summarizes the task into a single directive (e.g. "Submit assignment via LMS").</span>
+                  <span><strong>Quick Summaries:</strong> Generates a brief action title so you understand what is due without reading long paragraphs.</span>
                 </li>
               </ul>
             </MagicBentoCard>
@@ -154,20 +154,20 @@ export default function AgentInfoModal({ isOpen, onClose }) {
           {/* Benchmarks & Highlights */}
           <div className="p-4 rounded-xl bg-zinc-950 border border-white/[0.06] space-y-3">
             <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider">
-              System Benchmarks & Key Capabilities
+              System Performance &amp; Privacy
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
               <div className="p-3 rounded-lg bg-zinc-900/60 border border-white/[0.05]">
                 <div className="text-xl font-bold text-emerald-400">~90%</div>
-                <div className="text-[11px] text-zinc-400">Spam Reduction</div>
+                <div className="text-[11px] text-zinc-400">Chatter Filtered</div>
               </div>
               <div className="p-3 rounded-lg bg-zinc-900/60 border border-white/[0.05]">
                 <div className="text-xl font-bold text-cyan-400">100%</div>
-                <div className="text-[11px] text-zinc-400">Client-Side Privacy</div>
+                <div className="text-[11px] text-zinc-400">Browser-Local Privacy</div>
               </div>
               <div className="p-3 rounded-lg bg-zinc-900/60 border border-white/[0.05]">
                 <div className="text-xl font-bold text-amber-400">&lt; 300ms</div>
-                <div className="text-[11px] text-zinc-400">Parse Latency</div>
+                <div className="text-[11px] text-zinc-400">Fast Local Parsing</div>
               </div>
             </div>
           </div>

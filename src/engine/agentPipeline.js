@@ -352,8 +352,8 @@ export function runAgent2Extractor(message, category) {
     else if (links.length > 0) actionSummary = `Access ${links[0].label}`;
     else actionSummary = 'Review shared study materials & references';
   } else if (category === 'ANNOUNCEMENT') {
-    if (/hackathon|genarrative|gfg|giveaway/i.test(text)) actionSummary = 'GeNarrative Clash 2026: GFG Flagship Hackathon Announcement';
-    else if (/workshop/i.test(text)) actionSummary = 'Campus AI & Technology Workshop Announcement';
+    if (/hackathon|genarrative|gfg|giveaway/i.test(text)) actionSummary = 'Campus Tech Innovation & Challenge Announcement';
+    else if (/workshop/i.test(text)) actionSummary = 'Campus Technology Workshop Announcement';
     else if (/circular|exam fee/i.test(text)) actionSummary = 'Official Academic Circular & Fee Payment Notice';
     else if (/room/i.test(text)) actionSummary = 'Class venue relocated to new room';
     else if (/inspection/i.test(text)) actionSummary = 'Hostel proctorial inspection scheduled';

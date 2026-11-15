@@ -4,7 +4,7 @@ export const SAMPLE_CHATS = [
     id: 'cs-dept-official',
     name: 'CS Dept Official // 2026 Batch',
     subtitle: '62 messages • 82% spam ratio • Deadlines, Drive PDFs & notices',
-    description: 'DBMS project submission, socket programming lab, circulars, and hackathon alerts amid 35+ chatter messages.',
+    description: 'DBMS project submission, socket programming lab, circulars, and innovation challenge alerts amid 35+ chatter messages.',
     category: 'Academics & Events',
     rawText: `[11/10/26, 09:00:15] Prof. Ramanathan (HOD CSE): Good morning 3rd year students. Welcome to the official academic notices group for Semester 5. Only CRs and Faculty are permitted to post here.
 [11/10/26, 09:01:00] Aryan Sharma: Ok sir
