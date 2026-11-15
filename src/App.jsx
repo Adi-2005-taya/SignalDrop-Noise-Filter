@@ -55,25 +55,11 @@ export default function App() {
   const [isVerificationOpen, setIsVerificationOpen] = useState(false);
   const [detailItem, setDetailItem] = useState(null);
 
-  // Initialize
+  // Initialize: Always ensure page load and reload starts with a clean slate
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed && parsed.rawText && parsed.isUserImported && parsed.groupName !== 'CS Dept Official // 2026 Batch') {
-          let safeName = parsed.groupName;
-          if (!safeName || safeName.includes('\n') || safeName.startsWith('[') || safeName.length > 50) {
-            safeName = 'Imported WhatsApp Group';
-          }
-          handleProcessChat(parsed.rawText, safeName);
-          return;
-        }
-      }
-    } catch (e) {
-      console.warn('LocalStorage error:', e);
-    }
-    // Clean initial load: do NOT pre-populate fake chats!
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {}
   }, []);
 
   const handleProcessChat = (rawText, groupName) => {
@@ -91,17 +77,31 @@ export default function App() {
       setIsProcessing(false);
       setSelectedCategory('ALL');
       setSelectedCourse('ALL');
-
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify({
-          groupName: finalName,
-          rawText,
-          isUserImported: true
-        }));
-      } catch (e) {
-        // quota or private mode fallback
-      }
     }, 450);
+  };
+
+  const handleClearChat = () => {
+    setCurrentGroupName('No Chat Loaded');
+    setPipelineData({
+      rawMessages: [],
+      deadlines: [],
+      resources: [],
+      announcements: [],
+      spam: [],
+      stats: {
+        totalMessages: 0,
+        noiseFiltered: 0,
+        noisePercentage: 0,
+        signalCount: 0,
+        timeSavedMinutes: 0
+      }
+    });
+    setSelectedCategory('ALL');
+    setSelectedCourse('ALL');
+    setSearchQuery('');
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {}
   };
 
   const handleLoadSample = () => {
@@ -359,6 +359,7 @@ export default function App() {
           showSpamColumn={showSpamColumn}
           onLoadSample={handleLoadSample}
           onOpenVerification={() => setIsVerificationOpen(true)}
+          onClearChat={handleClearChat}
         />
 
         {/* Magic Bento Section */}

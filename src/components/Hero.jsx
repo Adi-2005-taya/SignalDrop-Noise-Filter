@@ -5,7 +5,8 @@ import {
   Share2, 
   Trash2,
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  RotateCcw
 } from 'lucide-react';
 
 export default function Hero({ 
@@ -16,7 +17,8 @@ export default function Hero({
   onToggleSpam, 
   showSpamColumn,
   onLoadSample,
-  onOpenVerification
+  onOpenVerification,
+  onClearChat
 }) {
   const hasMessages = stats && stats.totalMessages > 0;
 
@@ -84,13 +86,26 @@ export default function Hero({
               </button>
 
               {hasMessages ? (
-                <button
-                  onClick={onOpenDigest}
-                  className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-zinc-300 bg-zinc-900/90 hover:bg-zinc-800 border border-white/[0.08] transition"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Export Digest</span>
-                </button>
+                <>
+                  <button
+                    onClick={onOpenDigest}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-zinc-300 bg-zinc-900/90 hover:bg-zinc-800 border border-white/[0.08] transition"
+                  >
+                    <Share2 className="w-3.5 h-3.5 text-purple-400" />
+                    <span>Export Digest</span>
+                  </button>
+
+                  {onClearChat && (
+                    <button
+                      onClick={onClearChat}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-zinc-400 hover:text-rose-300 hover:bg-rose-500/10 border border-white/[0.08] hover:border-rose-500/30 transition"
+                      title="Clear chat and return to blank canvas"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Clear</span>
+                    </button>
+                  )}
+                </>
               ) : onLoadSample ? (
                 <button
                   onClick={onLoadSample}
